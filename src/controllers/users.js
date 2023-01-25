@@ -45,14 +45,24 @@ const loginUser = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    const { name, email, password } = req.body;
-    const { id } = req.user
+    const { name, email, currentPassword, password } = req.body;
+    const { id, email: loggedEmail } = req.user
 
     try {
 
+        if (!currentPassword) {
+            return res.status(400).json('Informe a senha atual.')
+        }
+
         const userEmail = await knex('users').where({ email }).first();
 
-        if (userEmail && userEmail.email === email) { return res.status(400).json('Email já cadastrado.') }
+        if (userEmail && userEmail.email !== loggedEmail) { return res.status(400).json('Email já cadastrado.') }
+
+        const validPassword = await bcrypt.compare(currentPassword, userEmail.password);
+
+        if (!validPassword) {
+            return res.status(400).json('Senha incorreta.')
+        }
 
         const encryptedPassword = await bcrypt.hash(password, 10);
 

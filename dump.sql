@@ -8,5 +8,6 @@ create table if not exists users (
 create table if not exists tasks (
     id serial primary key,
     description text not null,
-    conpleted boolean not null default false
+    completed boolean not null default false
+    user_id integer references user(id)
 )
