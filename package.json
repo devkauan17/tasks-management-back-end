@@ -2,9 +2,9 @@
   "name": "to-do-back-end",
   "version": "1.0.0",
   "description": "back-end de um gerenciador de tarefas.",
-  "main": "./src/index.js",
   "scripts": {
-    "dev": "nodemon ./src/index.js"
+    "dev": "nodemon ./src/index.js",
+    "start": "node ./src/index.js"
   },
   "author": "Kauan Rodrigues",
   "license": "ISC",
