@@ -22,7 +22,7 @@ const registerTask = async (req, res) => {
         const taskFound = await knex('tasks').where({ description }).first();
 
         if (taskFound && informedDescription === taskFound.description.toLowerCase()) {
-            return res.status(400).json('Essa tarefa já existe');
+            return res.status(400).json('Essa tarefa já existe.');
         };
 
         await knex('tasks').insert({ description, completed, user_id: id });
