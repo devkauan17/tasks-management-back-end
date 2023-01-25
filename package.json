@@ -2,7 +2,7 @@
   "name": "to-do-back-end",
   "version": "1.0.0",
   "description": "back-end de um gerenciador de tarefas.",
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
     "dev": "nodemon ./src/index.js"
   },
