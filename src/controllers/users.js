@@ -50,10 +50,6 @@ const updateUser = async (req, res) => {
 
     try {
 
-        if (!currentPassword) {
-            return res.status(400).json('Informe a senha atual.')
-        }
-
         const userEmail = await knex('users').where({ email }).first();
 
         if (userEmail && userEmail.email !== loggedEmail) { return res.status(400).json('Email já cadastrado.') }
