@@ -15,7 +15,6 @@ const { listTasks,
     registerTask,
     updateTask,
     deleteTask } = require('../controllers/tasks');
-const updateSchema = require('../schemas/updateSchema');
 
 routes.post('/login', validateRequest(loginSchema), loginUser);
 routes.post('/user', validateRequest(userSchema), registerUser);
@@ -24,7 +23,7 @@ routes.use(authentication)
 
 routes.get('/user', getUser);
 routes.delete('/user', deleteUser);
-routes.put('/user', validateRequest(updateSchema), updateUser);
+routes.put('/user', updateUser);
 
 routes.get('/tasks', listTasks);
 routes.post('/task', validateRequest(taskSchema), registerTask);

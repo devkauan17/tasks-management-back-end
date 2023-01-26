@@ -18,14 +18,6 @@ const registerTask = async (req, res) => {
 
     try {
 
-        const taskFound = await knex('tasks').where({ description, user_id: id }).first();
-
-        const informedDescription = description.toLowerCase();
-
-        if (taskFound && informedDescription === taskFound.description.toLowerCase()) {
-            return res.status(400).json('Essa tarefa já existe.');
-        };
-
         const task = await knex('tasks').insert({ description, completed, user_id: id }).returning('*');
 
         return res.status(202).json(task);
@@ -43,16 +35,6 @@ const updateTask = async (req, res) => {
 
     try {
 
-        const informedDescription = description.toLowerCase();
-
-        const taskFound = await knex('tasks').where({ id, user_id: user.id }).first();
-
-        if (!taskFound) { return res.status(400).json('Tarefa não encontrada.') };
-
-        if (taskFound && informedDescription === taskFound.description.toLowerCase()) {
-            return res.status(400).json('Essa tarefa já existe.');
-        };
-
         await knex('tasks').update({ description, completed }).where({ id });
 
         return res.status(204).json({});
@@ -68,9 +50,9 @@ const deleteTask = async (req, res) => {
     const { user } = req;
 
     try {
-        const taskFound = await knex('tasks').where({ id, user_id: user.id }).first();
+        const task = await knex('tasks').where({ id, user_id: user.id }).first();
 
-        if (!taskFound) { return res.status(400).json('Tarefa não encontrada.') };
+        if (!task) { return res.status(400).json('Tarefa não encontrada.') };
 
         await knex('tasks').where({ id }).del();
 

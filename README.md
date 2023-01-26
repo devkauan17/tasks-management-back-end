@@ -255,7 +255,7 @@ Para qualquer rota abaixo é preciso do token que é gerado no login.
 
 #### `POST` `/task`
 
- Esse endpoint realiza o cadastro de uma tarefa no sistema, mas antes essa rota verifica se ja existe uma tarefa existente no sistema.
+ Esse endpoint realiza o cadastro de uma tarefa no sistema.
 
 #### Exemplo de requisição
 

@@ -1,6 +1,7 @@
 const knex = require("../connections/database");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { currentPasswordSchema, newPasswordSchema, emailSchema } = require("../schemas/updateSchema");
 
 const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
@@ -52,6 +53,8 @@ const updateUser = async (req, res) => {
 
     try {
 
+        await currentPasswordSchema.validateAsync(currentPassword)
+
         const validPassword = await bcrypt.compare(currentPassword, user.password);
 
         if (!validPassword) {
@@ -63,6 +66,8 @@ const updateUser = async (req, res) => {
 
             if (userEmail && userEmail.email !== user.email) { return res.status(400).json('Email já cadastrado.') };
 
+            await emailSchema.validateAsync(email)
+
             updateData.email = email;
         }
 
@@ -70,13 +75,13 @@ const updateUser = async (req, res) => {
 
         if (newPassword) {
 
+            await newPasswordSchema.validateAsync(newPasswordSchema)
+
             const encryptedPassword = await bcrypt.hash(newPassword, 10);
 
             updateData.password = encryptedPassword;
 
         };
-
-        console.log(updateData)
 
         await knex('users').update(updateData).where({ id: user.id });
 
