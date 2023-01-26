@@ -243,8 +243,6 @@ Esse endpoint exclui a conta do usuário logado no momento. Como não é informa
 <br/>
 </details>
 
-<br/>
-
 ##### Para tarefas:
 
 Para qualquer rota abaixo é preciso do token que é gerado no login.
