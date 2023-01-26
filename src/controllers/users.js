@@ -52,6 +52,12 @@ const updateUser = async (req, res) => {
 
     try {
 
+        const validPassword = await bcrypt.compare(currentPassword, user.password);
+
+        if (!validPassword) {
+            return res.status(400).json('Senha incorreta.');
+        };
+
         if (email) {
             const userEmail = await knex('users').where({ email }).first();
 
@@ -59,12 +65,6 @@ const updateUser = async (req, res) => {
 
             updateData.email = email;
         }
-
-        const validPassword = await bcrypt.compare(currentPassword, user.password);
-
-        if (!validPassword) {
-            return res.status(400).json('Senha incorreta.');
-        };
 
         if (name) { updateData.name = name; };
 

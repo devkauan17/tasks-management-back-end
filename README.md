@@ -171,7 +171,7 @@ Esse endpoint retorna os dados do usuário logado. Essa rota retorna o req.user 
 
 #### `PUT` `/user`
 
- Esse endpoint realiza a atulização da dados do usuário logado. Antes de qualquer avanço ele encripta a nova senha, verifica se o email informado já foi cadastrado por alguma outra conta, e também é preciso informar a senha antiga e a nova para concluir essa atualização.
+ Esse endpoint realiza a atualização da dados do usuário logado. Antes de qualquer avanço, é preciso informar a senha atual para  que seja atulizado os dados informados. Se o email fro informado, é verificado se ja existe o mesmo cadastrado no sistema, e se a senha também for informada ela é encriptada antes de ser cadastrada no banco de dados.
 
 ### Exemplo de requisição
 
@@ -271,6 +271,15 @@ Para qualquer rota abaixo é preciso do token que é gerado no login.
 ```javascript
 // HTTP Status 202
 // Sem resposta no body
+
+[
+	{
+		"id": 1,
+		"description": "teste",
+		"completed": false,
+		"user_id": 2
+	}
+]
 
 ```
 
