@@ -17,7 +17,8 @@ const registerUser = async (req, res) => {
         return res.status(202).json({})
 
     } catch (error) {
-        return res.status(500).json(error.message)
+        return res.status(500).json('Erro interno do servidor.')
+
     }
 };
 
@@ -40,21 +41,21 @@ const loginUser = async (req, res) => {
         return res.status(200).json({ user: userData, token })
 
     } catch (error) {
-        return res.status(500).json(error.message)
+        return res.status(500).json('Erro interno do servidor.')
     }
 }
 
 const updateUser = async (req, res) => {
     const { name, email, currentPassword, password } = req.body;
-    const { id, email: loggedEmail } = req.user
+    const { user } = req
 
     try {
 
         const userEmail = await knex('users').where({ email }).first();
 
-        if (userEmail && userEmail.email !== loggedEmail) { return res.status(400).json('Email já cadastrado.') }
+        if (userEmail && userEmail.email !== user.email) { return res.status(400).json('Email já cadastrado.') }
 
-        const validPassword = await bcrypt.compare(currentPassword, userEmail.password);
+        const validPassword = await bcrypt.compare(currentPassword, user.password);
 
         if (!validPassword) {
             return res.status(400).json('Senha incorreta.')
@@ -62,13 +63,12 @@ const updateUser = async (req, res) => {
 
         const encryptedPassword = await bcrypt.hash(password, 10);
 
-        await knex('users').update({ name, email, password: encryptedPassword }).where({ id });
+        await knex('users').update({ name, email, password: encryptedPassword }).where({ id: user.id });
 
         return res.status(201).json();
 
     } catch (error) {
-        return res.status(500).json(error.message)
-
+        return res.status(500).json('Erro interno do servidor.')
     }
 }
 
@@ -81,12 +81,13 @@ const deleteUser = async (req, res) => {
         return res.status(200).json({});
 
     } catch (error) {
-        return res.status(500).json(error.message)
+        return res.status(500).json('Erro interno do servidor.')
     }
 }
 
 const getUser = async (req, res) => {
-    return res.json(req.user)
+
+    return res.status(200).json(req.user)
 };
 
 module.exports = { registerUser, loginUser, updateUser, deleteUser, getUser }

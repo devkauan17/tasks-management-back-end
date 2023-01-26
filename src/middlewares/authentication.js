@@ -13,11 +13,11 @@ const authentication = async (req, res, next) => {
     try {
         const { id } = jwt.verify(token, process.env.JWT_KEY);
 
-        const { password: _, ...userData } = await knex('users').where({ id }).first();
+        const user = await knex('users').where({ id }).first();
 
-        if (!userData) { return res.status(401).json('Não autorizado') };
+        if (!user) { return res.status(401).json('Não autorizado') };
 
-        req.user = userData;
+        req.user = user;
 
         next();
     } catch (error) {

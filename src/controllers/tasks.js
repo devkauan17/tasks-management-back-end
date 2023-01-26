@@ -7,7 +7,8 @@ const listTasks = async (req, res) => {
 
         return res.status(200).json(tasks)
     } catch (error) {
-        return res.status(500).json(error.message);
+        return res.status(500).json('Erro interno do servidor.')
+
     };
 };
 
@@ -19,7 +20,7 @@ const registerTask = async (req, res) => {
 
         const informedDescription = description.toLowerCase();
 
-        const taskFound = await knex('tasks').where({ description }).first();
+        const taskFound = await knex('tasks').where({ description, user_id: id }).first();
 
         if (taskFound && informedDescription === taskFound.description.toLowerCase()) {
             return res.status(400).json('Essa tarefa já existe.');
@@ -30,17 +31,19 @@ const registerTask = async (req, res) => {
         return res.status(202).json({});
 
     } catch (error) {
-        return res.status(500).json(error.message);
+        return res.status(500).json('Erro interno do servidor.')
+
     };
 };
 
 const updateTask = async (req, res) => {
     const { description, completed } = req.body;
     const { id } = req.params;
+    const { user } = req
 
     try {
 
-        const taskFound = await knex('tasks').where({ id }).first();
+        const taskFound = await knex('tasks').where({ id, user_id: user.id }).first();
 
         if (!taskFound) { return res.status(400).json('Tarefa não encontrada.') };
 
@@ -49,15 +52,17 @@ const updateTask = async (req, res) => {
         return res.status(204).json({});
 
     } catch (error) {
-        return res.status(500).json(error.message);
+        return res.status(500).json('Erro interno do servidor.')
+
     };
 };
 
 const deleteTask = async (req, res) => {
     const { id } = req.params;
+    const { user } = req;
 
     try {
-        const taskFound = await knex('tasks').where({ id }).first();
+        const taskFound = await knex('tasks').where({ id, user_id: user.id }).first();
 
         if (!taskFound) { return res.status(400).json('Tarefa não encontrada.') };
 
@@ -66,7 +71,8 @@ const deleteTask = async (req, res) => {
         return res.status(200).json({});
 
     } catch (error) {
-        return res.status(500).json(error.message);
+        return res.status(500).json('Erro interno do servidor.')
+
     };
 };
 
