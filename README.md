@@ -1,6 +1,6 @@
 # Gerenciamento de tarefas
 
-Esse projeto consiste em um gerenciador de tarefas integrado com banco de dados. Esse projeto usa as seguintes bibliotecas: Bcrypt, Cors, Dotenv, Express, JOI, JsonWebToken, Knex e PG.
+Esse projeto consiste em um gerenciador de tarefas integrado com banco de dados. Ele usa as seguintes bibliotecas: Bcrypt, Cors, Dotenv, Express, JOI, JsonWebToken, Knex e PG.
 
 
 Link do deploy: <a href='https://tasks-management-back-end.cyclic.app/' target='_black'>Gerenciador de tarefas</a>
