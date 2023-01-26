@@ -46,29 +46,44 @@ const loginUser = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    const { name, email, currentPassword, password } = req.body;
+    const { name, email, currentPassword, newPassword } = req.body;
     const { user } = req
+    const updateData = {};
 
     try {
 
-        const userEmail = await knex('users').where({ email }).first();
+        if (email) {
+            const userEmail = await knex('users').where({ email }).first();
 
-        if (userEmail && userEmail.email !== user.email) { return res.status(400).json('Email já cadastrado.') }
+            if (userEmail && userEmail.email !== user.email) { return res.status(400).json('Email já cadastrado.') };
+
+            updateData.email = email;
+        }
 
         const validPassword = await bcrypt.compare(currentPassword, user.password);
 
         if (!validPassword) {
-            return res.status(400).json('Senha incorreta.')
-        }
+            return res.status(400).json('Senha incorreta.');
+        };
 
-        const encryptedPassword = await bcrypt.hash(password, 10);
+        if (name) { updateData.name = name; };
 
-        await knex('users').update({ name, email, password: encryptedPassword }).where({ id: user.id });
+        if (newPassword) {
+
+            const encryptedPassword = await bcrypt.hash(newPassword, 10);
+
+            updateData.password = encryptedPassword;
+
+        };
+
+        console.log(updateData)
+
+        await knex('users').update(updateData).where({ id: user.id });
 
         return res.status(201).json();
 
     } catch (error) {
-        return res.status(500).json('Erro interno do servidor.')
+        return res.status(500).json(error.message)
     }
 }
 

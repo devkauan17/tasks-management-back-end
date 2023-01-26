@@ -180,7 +180,7 @@ Esse endpoint retorna os dados do usuário logado. Essa rota retorna o req.user 
     'name': 'exemplo de nome',
     'email': 'exemplo@email.com',
     'currentPassword':'senha1234',
-    'password': 'senha123456'
+    'newPassword': 'senha123456'
 }
 ```
 
